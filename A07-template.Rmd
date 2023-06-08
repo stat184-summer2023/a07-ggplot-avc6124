@@ -57,7 +57,8 @@ Time/dates are typically stored as a special kind of number: a **POSIX** date.
 ```{r}
 Trips %>%
   ggplot(aes(x = sdate)) +
-  geom_density(fill = "gray", color = NA)
+  geom_density(fill = "gray", color = NA) 
+
 ```
 
 
