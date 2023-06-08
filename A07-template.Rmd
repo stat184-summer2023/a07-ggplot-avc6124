@@ -1,7 +1,7 @@
 ---
 title: "A07- ggplot"
-author: "YOUR NAME"
-date: "DATE"
+author: "Alvin Chen"
+date: "6/9/2023"
 output: html_notebook
 ---
 
@@ -70,9 +70,30 @@ When you make your plot, you will likely find that the axis range is being set b
 ```{r}
 ### Your code here
 
+#duration
+Trips <-
+  Trips %>%
+  mutate(time = as.numeric(edate - sdate))
+
+#to hours
+Trips <-
+  Trips %>%
+  mutate(hours = time/60)
+
+#filter outliers
+Trips_filtered <-
+  Trips %>% 
+  filter(hours <= 24)
+
+#box & wisker plot
+ggplot(Trips_filtered) +
+  aes(x = client, y = hours) +
+  geom_boxplot(fill = "#81F1E7") +
+  labs(y = "dur/60") +
+  theme_linedraw() +
+  ylim(0, 30)
 
 ```
-
 
 ## Question 2: When are bikes used?
 
@@ -103,7 +124,7 @@ You can use [Figure 18.3](https://dtkaplan.github.io/DataComputingEbook/project-
 
 ```{r}
 ### Your Code Here
-
+esquisser(Trips_filtered)
 ```
 
 
