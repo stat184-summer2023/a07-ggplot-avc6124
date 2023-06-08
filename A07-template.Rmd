@@ -21,6 +21,7 @@ You can access the data from the Capital Bikeshare web site. Doing this requires
 
 ```{r}
 library(tidyverse)
+library(gridExtra)
 
 station_url <- "https://mdbeckman.github.io/dcSupplement/data/DC-Stations.csv"
 Stations <- readr::read_csv(station_url)
@@ -180,10 +181,18 @@ Group the bike rentals by three variables: hour of the day, day of the week, and
 
 ```{r}
 ### My Code here
+groups <-
+  Trips_filtered %>%
+  group_by(hours, week = wday(sdate), client) %>%
+  summarize(count = n())
 
+ggplot(groups, aes(x = hours, y = count, group = client)) +
+  geom_line(aes(color = client)) +
+  facet_wrap(~ week, nrow = 1) +
+  labs(x = "hour", y = "count")
 ```
 
-My comments here.....
+Looking at the graph, a trend that can be seen is that there seems to be a lot more registered users using making trips at arounf the same time each day and there seems to be more casual users towards the night but over all the casual count seems to stay around the same.
 
 
 ## Question 4: How Far? 
@@ -243,6 +252,25 @@ Our goal here is to recreate [Figure 18.5](https://dtkaplan.github.io/DataComput
 
 ```{r}
 ### My code here
+start_to_end <-
+  inner_join(Trips, PairDistances)
+
+#plot ride distance
+ride_dis <-
+  ggplot(start_to_end) +
+    aes(x = distance) +
+    geom_density(adjust = 1L) +
+    theme_classic() +
+    xlim(0, 15)
+
+#put two on one
+both_graphs <-
+  ride_dis +
+  geom_density(data = PairDistances, aes(x = distance), fill = "LightSkyBlue", alpha = 0.5) +
+  labs(x = "Trip Distance (Km)") 
+
+#show graph
+both_graphs
 
 ```
 
@@ -254,6 +282,8 @@ Our goal here is to recreate [Figure 18.5](https://dtkaplan.github.io/DataComput
 Look at the variables in `Stations` and `Trips` and explain why `Simple` and `Simple2` were given different variable names for the station. 
 
 Optional Extra credit answer here.....
+
+Stations and Trips are used for different purposes. Stations describes the names of each station and in Trips, it describes beginning and end stations of each trip. In joining Simple and Simple2, the name variable in Stations was renamed to be sstation, as the starting place of the distance. Simple2 was renamed to estatation to take place of the ending coordinates of the trip. This would put a clear difference from one to the other making it easier to use the data.
 
 
 
