@@ -86,8 +86,7 @@ Trips_filtered <-
   filter(hours <= 24)
 
 #box & wisker plot
-ggplot(Trips_filtered) +
-  aes(x = client, y = hours) +
+ggplot(Trips_filtered, aes(x = client, y = hours)) +
   geom_boxplot(fill = "#81F1E7") +
   labs(y = "dur/60") +
   theme_linedraw() +
@@ -124,46 +123,55 @@ You can use [Figure 18.3](https://dtkaplan.github.io/DataComputingEbook/project-
 
 ```{r}
 ### Your Code Here
-esquisser(Trips_filtered)
+ggplot(Trips_filtered, aes(x = yday(sdate))) +
+  geom_density(adjust = 1L, fill = "#6B6B6B") +
+  theme_minimal() +
+  labs(x = "day of year")
 ```
 
 
-My observations here..... 
+Examining the graph, it looks like there was more usage of the bikes towards the begining of the fourth quarter. It looks like the season and weather may have an effect on the number of bikes used.
 
 
 ### Day of Week
 
 ```{r}
 ### Your Code Here
-
+ggplot(Trips_filtered, aes(x = day(sdate))) +
+  geom_density(adjust = 1L, fill = "#6B6B6B") +
+  theme_minimal() +
+  labs(x = "day of week")
 ```
 
 
-My observations here..... 
-
+From the "Day of the week graph," there seems to be a steady downwards trending line, but each week seems to stay pretty constant. As the weeks go on, the amount of trips fall with the addition of a couple peaks.
 
 
 ### Hour of Day
 
 ```{r}
 ### Your Code Here
-
+ggplot(Trips_filtered, aes(x = hours)) +
+  geom_density(adjust = 1L, fill = "#6B6B6B") +
+  theme_minimal() +
+  xlim(0, 24) +
+  labs(x = "hour of day")
 ```
 
-
-My observations here..... 
-
-
+For the "hour of the day" graph, I can see that that the peak use of the peak use of the bikes are around 6 am. Later in the day the density of trips fall and there is mimial usage frpm 10pm-12:00am.
 
 ### Minute of Hour
 
 ```{r}
 ### Your Code Here
-
+ggplot(Trips_filtered, aes(x = minute(sdate))) +
+  geom_density(adjust = 1L, fill = "#6B6B6B") +
+  theme_minimal() +
+  labs(x = "minute of hour") 
 ```
 
 
-My observations here..... 
+Looking at the "minute of hour" graph, we can see the steady use of the bike throughout the whole hour. The general slope remains constant. 
 
 
 ## Question 3: Grouping
